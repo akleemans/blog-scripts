@@ -27,6 +27,7 @@ var HashLengthCtrl = /** @class */ (function () {
     };
     // noinspection JSMethodCanBeStatic
     HashLengthCtrl.prototype.getBaseLog = function (x, y) {
+        // noinspection JSSuspiciousNameCombination
         return Math.log(y) / Math.log(x);
     };
     // noinspection JSMethodCanBeStatic

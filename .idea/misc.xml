@@ -236,8 +236,5 @@
       </profile-state>
     </entry>
   </component>
-  <component name="ProjectPlainTextFileTypeManager">
-    <file url="file://$PROJECT_DIR$/mobile-number-cost/swiss-song-charts.js" />
-  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" />
 </project>

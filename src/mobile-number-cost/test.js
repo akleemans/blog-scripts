@@ -80,7 +80,7 @@ describe('Mobile number cost', () => {
   });
 
   describe('Category E', () => {
-    it('should recognize other numbersas Cat. E', () => {
+    it('should recognize other numbers as Cat. E', () => {
       expect(controller.getCategory('0793862030')).toBe('E');
       expect(controller.subcategory).toBe('other');
 

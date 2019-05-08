@@ -11,7 +11,7 @@ class PhoneNumberCtrl {
         this.calculate();
     }
 
-    private calculate(): void {
+    public calculate(): void {
         console.log('calculate called this: ', this);
         const nr = this.prefix + this.nr;
         if (nr.length !== 10) {
@@ -27,7 +27,7 @@ class PhoneNumberCtrl {
         this.cost = 'CHF ' + categories[category];
     }
 
-    private getCategory(nr): string {
+    public getCategory(nr): string {
         let category = 'E';
         this.subcategory = 'other';
         let catB = this.isCategoryB(nr);

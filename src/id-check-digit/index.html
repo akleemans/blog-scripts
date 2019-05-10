@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Identity card check digit</title>
+    <meta name="author" content="Adrianus Kleemans">
+</head>
+
+<body>
+<div ng-app="IdCheckDigitApp" ng-controller="IdCheckDigitCtrl as idCheckDigitCtrl"
+     style="font-size: 24px; border: 1px solid #ccc; border-radius: 16px; padding: 15px;">
+    <div>
+        Ausweisnummer:
+        <input type="text" ng-model="idCheckDigitCtrl.partA" ng-change="idCheckDigitCtrl.calculate()"
+               style="font-size: 22px; width: 150px;">
+        <input type="text" ng-model="idCheckDigitCtrl.checksumA" readonly style="font-size: 22px; width: 30px;">
+    </div>
+    <div style="margin-top: 5px;">
+        Geburtsdatum (JJMMTT):
+        <input type="text" ng-model="idCheckDigitCtrl.partB" ng-change="idCheckDigitCtrl.calculate()"
+               style="font-size: 22px; width: 150px;">
+        <input type="text" ng-model="idCheckDigitCtrl.checksumB" readonly style="font-size: 22px; width: 30px;">
+    </div>
+    <div style="margin-top: 5px;">
+        Gültig bis (JJMMTT):
+        <input type="text" ng-model="idCheckDigitCtrl.partC" ng-change="idCheckDigitCtrl.calculate()"
+               style="font-size: 22px; width: 150px;">
+        <input type="text" ng-model="idCheckDigitCtrl.checksumC" readonly style="font-size: 22px; width: 30px;">
+    </div>
+    <div style="margin-top: 5px;">
+        Globale Prüfziffer:
+        <input type="text" ng-model="idCheckDigitCtrl.globalChecksum" readonly
+               style="font-size: 22px; width: 30px;">
+    </div>
+
+    <div>
+        Identitätskarte:
+    </div>
+    <pre ng-if="idCheckDigitCtrl.valid">
+        IDCHE{{ idCheckDigitCtrl.partA }}&lt;{{ idCheckDigitCtrl.checksumA }}&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
+        {{ idCheckDigitCtrl.partB }}{{ idCheckDigitCtrl.checksumB }}X{{ idCheckDigitCtrl.partC }}{{ idCheckDigitCtrl.checksumC }}CHE&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;{{ idCheckDigitCtrl.globalChecksum }}
+        MUSTER&lt;&lt;HANS&lt;MICHAEL&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
+    </pre>
+    <pre ng-if="!idCheckDigitCtrl.valid">
+        IDCHE--------&lt;-&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
+        -------X-------CHE&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;-
+        MUSTER&lt;&lt;HANS&lt;MICHAEL&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
+    </pre>
+
+    <div>
+        Pass:
+    </div>
+    <pre ng-if="idCheckDigitCtrl.valid">
+        PMCHEMUSTER&lt;&lt;HANS&lt;MICHAEL&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
+        {{ idCheckDigitCtrl.partA }}&lt;{{ idCheckDigitCtrl.checksumA }}CHE{{ idCheckDigitCtrl.partB }}{{ idCheckDigitCtrl.checksumB }}X{{ idCheckDigitCtrl.partC }}{{ idCheckDigitCtrl.checksumC }}&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;{{ idCheckDigitCtrl.globalChecksum }}
+    </pre>
+
+</div>
+<script src="../../lib/angular.js"></script>
+<script src="id-check-digit.js"></script>
+</body>
+</html>

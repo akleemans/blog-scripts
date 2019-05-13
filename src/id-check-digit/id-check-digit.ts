@@ -1,7 +1,7 @@
 declare var angular: any;
 
 class IdCheckDigitCtrl {
-    public partA: string = 'C8900000';
+    public partA: string = 'C8912345';
     public checksumA = '';
     public partB = '880101';
     public checksumB = '';

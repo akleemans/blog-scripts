@@ -1,6 +1,6 @@
 var IdCheckDigitCtrl = /** @class */ (function () {
     function IdCheckDigitCtrl() {
-        this.partA = 'C8900000';
+        this.partA = 'C8912345';
         this.checksumA = '';
         this.partB = '880101';
         this.checksumB = '';

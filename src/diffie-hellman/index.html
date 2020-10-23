@@ -6,33 +6,24 @@
     <meta name="description" content="Diffie-Hellman key exchange">
     <meta name="author" content="Adrianus Kleemans">
 </head>
-
 <body>
-<div ng-app="DiffieHellmanApp" ng-controller="DiffieHellmanCtrl as ctrl">
+<div id="app" ng-app="DiffieHellmanApp" ng-controller="DiffieHellmanCtrl as ctrl"
+     style="border: 1px solid #ccc; border-radius: 16px;padding:  15px;">
     <h2>Step 0: Who are you?</h2>
+    <p>Who are you?</p>
 
-    <p>
-        Who are you?
-    </p>
-
-    <label for="size">Choose a number size:</label>
-    <select name="size" id="size" ng-model="numberSize">
-        <option value="Small">small</option>
-        <option value="Big">big</option>
-    </select>
-
-    <input type="radio" id="person-a" name="person" value="Alice" ng-model="me">
+    <input type="radio" id="person-a" name="person" value="Alice" ng-model="ctrl.me">
     <label for="person-a"> I am Alice</label>
-    <input type="radio" id="person-b" name="person" value="Bob" ng-model="me">
+    <input type="radio" id="person-b" name="person" value="Bob" ng-model="ctrl.me">
     <label for="person-b"> I am Bob</label>
     <p>
-        You are: {{me}}
+        You are: {{ctrl.me}}
     </p>
 
     <h2>Step 1: Alice generates p, g, b and calculates A</h2>
 
     <div ng-if="ctrl.me === 'Alice'">
-        <button ng-click="prepareAlice()" type="button">Generate!</button>
+        <button ng-click="ctrl.prepareAlice()" type="button" class="btn btn-outline-primary">Generate!</button>
 
         <ul>
             <li>p: {{ctrl._p}}</li>
@@ -49,13 +40,14 @@
     <h2>Step 2: First exchange</h2>
 
     <div ng-if="ctrl.me === 'Alice'">
-        <p>Please share p, g and A with your friend Bob and wait for his response.</p>
+        <p>Please share <b>p = {{ctrl._p}}, g = {{ctrl._g}} and A = {{ctrl.A}}</b> with your friend Bob and wait for his
+            response.</p>
     </div>
     <div ng-if="ctrl.me === 'Bob'">
         <p>Wait for Alice to send you p, g and A and enter them here:</p>
         <label for="bob-p">Enter p: </label><input type="number" id="bob-p" value="small" ng-model="ctrl._p"><br>
         <label for="bob-g">Enter g: </label><input type="number" id="bob-g" value="small" ng-model="ctrl._g"><br>
-        <label for="bob-A">Enter A: </label><input type="number" id="bob-A" value="small" ng-model="ctrl._A"><br>
+        <label for="bob-A">Enter A: </label><input type="number" id="bob-A" value="small" ng-model="ctrl.A"><br>
     </div>
 
     <h2>Step 3: Bob generates b & calculates B</h2>
@@ -64,7 +56,8 @@
         <p>Bob is generating his secret number. Nothing to do for Alice here, please continue to next step.</p>
     </div>
     <div ng-if="ctrl.me === 'Bob'">
-        <button ng-click="ctrl.prepareBob()" type="button">Generate Bob's secret b!</button>
+        <button ng-click="ctrl.prepareBob()" type="button" class="btn btn-outline-primary">Generate Bob's secret b!
+        </button>
 
         <ul>
             <li>B: {{ctrl.B}}</li>
@@ -76,34 +69,46 @@
 
     <div ng-if="ctrl.me === 'Alice'">
         <p>Please enter <b>B</b> you get from Bob:</p>
-        TODO input
+        <input ng-model="ctrl.B">
     </div>
     <div ng-if="ctrl.me === 'Bob'">
-        <p>Please share your number B with Alice: {{ctrl.B}}</p>
+        <p>Please share your calculated <b>B = {{ctrl.B}}</b> with Alice.</p>
     </div>
 
     <h2>Final step 5: Calculation of the key</h2>
 
     <div ng-if="ctrl.me === 'Alice'">
         <p>As Alice, we can now compute the key as follows:</p>
-        TODO
+        <pre> B^a mod p = K </pre>
+        {{ctrl.B}}^{{ctrl._a}} mod {{ctrl._p}} = <b>{{ctrl.K}}</b>
     </div>
     <div ng-if="ctrl.me === 'Bob'">
         <p>As Bob, we can now compute the key as follows:</p>
-        TODO
+        <pre> A^b mod p = K </pre>
+        {{ctrl.A}}^{{ctrl._b}} mod {{ctrl._p}} = <b>{{ctrl.K}}</b>
     </div>
+    <button ng-click="ctrl.calculateKey()" type="button" class="btn btn-outline-primary">Calculate!</button>
+
+    The key K should now be the same for both Alice and Bob.
 
     <h2>Exchange "secured" messages</h2>
+    <p>
+        You can now exchange messages with your new key K!
+    </p>
 
-    You can now exchange messages with your new key K!
-
-    Try for example AES (?), enter a message, transmit it and decrypt it:
-
-    TODO inputs
+    <p>
+        Try for example this simple XOR encryption (not secure, but still unreadable), enter a message, transmit it:
+    </p>
+    <textarea ng-model="ctrl.message"></textarea><br>
+    <button ng-click="ctrl.encryptWithXORtoHex()" type="button" class="btn btn-outline-primary">Encrypt</button>
+    <button ng-click="ctrl.decrypt()" type="button" class="btn btn-outline-primary">Decrypt</button>
+    <div>Result: {{ctrl.encrypted}}</div>
 
 </div>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
-      integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+<!--
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+-->
 <script src="../../lib/angular.js"></script>
 <script src="diffie-hellman.js"></script>
 </body>

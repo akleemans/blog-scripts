@@ -13,19 +13,24 @@ var DiffieHellmanCtrl = /** @class */ (function () {
     // Function for Alice
     DiffieHellmanCtrl.prototype.prepareAlice = function () {
         // Initialize primes based on number size
-        this._p = 179;
+        this._p = this.getSmallPrime();
         this._g = 2;
-        this._a = this.getSecretNumber();
+        this._a = this.getSecretNumber(this._p);
         this.A = this.modExp(this._g, this._a, this._p);
+    };
+    DiffieHellmanCtrl.prototype.getSmallPrime = function () {
+        var smallPrimes = [83, 107, 167, 179, 227, 263];
+        var random = Math.floor(Math.random() * smallPrimes.length);
+        return smallPrimes[random];
     };
     // Function for Bob
     DiffieHellmanCtrl.prototype.prepareBob = function () {
-        this._b = this.getSecretNumber();
+        this._b = this.getSecretNumber(this._p);
         this.B = this.modExp(this._g, this._b, this._p);
     };
-    // Gets a secret number, for example a or b.
-    DiffieHellmanCtrl.prototype.getSecretNumber = function () {
-        return Math.floor(Math.random() * 1000);
+    // Generate random secret, for example a or b, in range {1...p-1}
+    DiffieHellmanCtrl.prototype.getSecretNumber = function (max) {
+        return Math.floor(Math.random() * (max - 1));
     };
     // Fast modular exponentiation for a ^ b mod n
     // from https://gist.github.com/krzkaczor/0bdba0ee9555659ae5fe

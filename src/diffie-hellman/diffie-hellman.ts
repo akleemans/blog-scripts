@@ -26,22 +26,28 @@ class DiffieHellmanCtrl implements ng.IOnInit {
     // Function for Alice
     public prepareAlice() {
         // Initialize primes based on number size
-        this._p = 179;
+        this._p = this.getSmallPrime();
         this._g = 2;
-        this._a = this.getSecretNumber();
+        this._a = this.getSecretNumber(this._p);
 
         this.A = this.modExp(this._g, this._a, this._p);
     }
 
+    private getSmallPrime(): number {
+        const smallPrimes = [83, 107, 167, 179, 227, 263];
+        const random = Math.floor(Math.random() * smallPrimes.length);
+        return smallPrimes[random];
+    }
+
     // Function for Bob
     public prepareBob() {
-        this._b = this.getSecretNumber();
+        this._b = this.getSecretNumber(this._p);
         this.B = this.modExp(this._g, this._b, this._p);
     }
 
-    // Gets a secret number, for example a or b.
-    private getSecretNumber(): number {
-        return Math.floor(Math.random() * 1000);
+    // Generate random secret, for example a or b, in range {1...p-1}
+    private getSecretNumber(max: number): number {
+        return Math.floor(Math.random() * (max-1));
     }
 
     // Fast modular exponentiation for a ^ b mod n
